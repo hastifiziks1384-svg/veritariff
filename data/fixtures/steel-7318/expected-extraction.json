@@ -1,0 +1,52 @@
+{
+  "fixture": "steel-7318",
+  "note": "Ground truth for the FixtureExtractionService and extraction tests. The 120 vs 95 kg gross-weight disagreement is the deliberate mismatch from §10 of the spec. Fields with status 'missing' are deliberately absent from the source document and must be flagged, never invented.",
+  "documents": {
+    "commercial_invoice.txt": {
+      "type": "commercial_invoice",
+      "fields": {
+        "reference": { "value": "MS-EXP-2026-0117", "confidence": 0.97, "status": "extracted" },
+        "shipper": { "value": "Müller Stahl GmbH", "confidence": 0.96, "status": "extracted" },
+        "consignee": { "value": "Sheffield Fastener Imports Ltd", "confidence": 0.96, "status": "extracted" },
+        "invoice_value": { "value": "4850.00", "unit": "EUR", "confidence": 0.95, "status": "extracted" },
+        "currency": { "value": "EUR", "confidence": 0.97, "status": "extracted" },
+        "quantity": { "value": "4000", "unit": "pcs", "confidence": 0.95, "status": "extracted" },
+        "gross_weight_kg": { "value": "120", "unit": "kg", "confidence": 0.94, "status": "extracted" },
+        "net_weight_kg": { "value": "88", "unit": "kg", "confidence": 0.94, "status": "extracted" },
+        "hs_code": { "value": "7318.15", "confidence": 0.95, "status": "extracted" },
+        "stated_origin": { "value": "DE", "confidence": 0.93, "status": "extracted" },
+        "incoterm": { "value": "DAP Sheffield", "confidence": 0.95, "status": "extracted" }
+      }
+    },
+    "packing_list.txt": {
+      "type": "packing_list",
+      "fields": {
+        "reference": { "value": "MS-EXP-2026-0117", "confidence": 0.97, "status": "extracted" },
+        "shipper": { "value": "Müller Stahl GmbH", "confidence": 0.95, "status": "extracted" },
+        "consignee": { "value": "Sheffield Fastener Imports Ltd", "confidence": 0.95, "status": "extracted" },
+        "quantity": { "value": "4000", "unit": "pcs", "confidence": 0.95, "status": "extracted" },
+        "net_weight_kg": { "value": "88", "unit": "kg", "confidence": 0.94, "status": "extracted" },
+        "gross_weight_kg": { "value": "95", "unit": "kg", "confidence": 0.94, "status": "extracted" },
+        "hs_code": { "value": null, "confidence": 0, "status": "missing" },
+        "stated_origin": { "value": null, "confidence": 0, "status": "missing" },
+        "incoterm": { "value": null, "confidence": 0, "status": "missing" },
+        "invoice_value": { "value": null, "confidence": 0, "status": "missing" },
+        "currency": { "value": null, "confidence": 0, "status": "missing" }
+      }
+    },
+    "suppliers_declaration.txt": {
+      "type": "suppliers_declaration",
+      "fields": {
+        "reference": { "value": "MS-EXP-2026-0117", "confidence": 0.96, "status": "extracted" },
+        "shipper": { "value": "Müller Stahl GmbH", "confidence": 0.95, "status": "extracted" },
+        "consignee": { "value": "Sheffield Fastener Imports Ltd", "confidence": 0.95, "status": "extracted" },
+        "hs_code": { "value": "7318.15", "confidence": 0.94, "status": "extracted" },
+        "non_originating_materials": {
+          "value": "steel wire rod, HS heading 7213, origin CN (non-originating)",
+          "confidence": 0.92,
+          "status": "extracted"
+        }
+      }
+    }
+  }
+}

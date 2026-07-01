@@ -1,0 +1,31 @@
+                            COMMERCIAL INVOICE
+
+Müller Stahl GmbH                              Invoice No:   MS-INV-2026-0117
+Rheinstraße 44                                 Invoice Date: 2026-06-22
+40219 Düsseldorf, Germany                      Export Ref:   MS-EXP-2026-0117
+VAT: DE 812 345 678                            Page: 1 of 1
+
+SOLD TO / CONSIGNEE:
+Sheffield Fastener Imports Ltd
+Unit 7, Attercliffe Trading Estate
+Sheffield S9 3XL, United Kingdom
+EORI: GB123456789000
+
+Incoterm: DAP Sheffield (Incoterms 2020)
+Country of Origin: Germany
+Commodity Code (HS): 7318.15
+
+------------------------------------------------------------------------------
+Item  Description                              Qty (pcs)  Unit Price    Amount
+------------------------------------------------------------------------------
+1     Steel hex bolts M8 x 40 mm, zinc         4,000      EUR 1.2125   EUR 4,850.00
+      plated — threaded fasteners of iron
+      or steel
+------------------------------------------------------------------------------
+Total:                                                                 EUR 4,850.00
+Currency: EUR
+
+Net Weight:   88 kg
+Gross Weight: 120 kg
+
+Payment terms: 30 days net

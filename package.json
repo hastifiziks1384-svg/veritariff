@@ -1,0 +1,31 @@
+{
+  "name": "veritariff",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w web",
+    "build": "npm run build -w web",
+    "test": "node node_modules/vitest/vitest.mjs run",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "check:boundary": "node scripts/check-engine-boundary.mjs",
+    "db:generate": "node node_modules/prisma/build/index.js generate --schema packages/db/prisma/schema.prisma",
+    "db:push": "node node_modules/prisma/build/index.js db push --schema packages/db/prisma/schema.prisma",
+    "db:seed": "node node_modules/tsx/dist/cli.mjs packages/db/prisma/seed.ts",
+    "verify": "npm run check:boundary && npm run typecheck && npm test"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "prisma": "^6.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.0"
+  }
+}

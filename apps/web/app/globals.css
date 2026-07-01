@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+/*
+ * Veritariff brand palette (§5.7). Calm, light, minimal.
+ * Never pure grey; never a dark theme.
+ */
+@theme {
+  --color-ground: #faf9f5; /* page background */
+  --color-road: #00a88c; /* primary teal */
+  --color-ink: #182634; /* text */
+  --color-gold: #b08034; /* accent */
+  --color-cleared: #16966e; /* function: cleared */
+  --color-attention: #c0780c; /* function: attention */
+  --color-blocked: #b93a2e; /* function: blocked */
+}
+
+body {
+  background-color: var(--color-ground);
+  color: var(--color-ink);
+}

@@ -1,0 +1,30 @@
+{
+  "fixture": "steel-7318",
+  "reference": "MS-EXP-2026-0117",
+  "shipperName": "Müller Stahl GmbH",
+  "consigneeName": "Sheffield Fastener Imports Ltd",
+  "originCountry": "DE",
+  "destinationCountry": "GB",
+  "lane": "EU->UK",
+  "shipmentDate": "2026-06-23",
+  "documents": [
+    {
+      "file": "documents/commercial_invoice.txt",
+      "type": "commercial_invoice",
+      "format": "txt",
+      "source": "upload"
+    },
+    {
+      "file": "documents/packing_list.txt",
+      "type": "packing_list",
+      "format": "txt",
+      "source": "upload"
+    },
+    {
+      "file": "documents/suppliers_declaration.txt",
+      "type": "suppliers_declaration",
+      "format": "txt",
+      "source": "upload"
+    }
+  ]
+}

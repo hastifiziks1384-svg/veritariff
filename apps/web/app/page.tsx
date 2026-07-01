@@ -1,0 +1,41 @@
+import { prisma } from "@veritariff/db";
+
+export const dynamic = "force-dynamic";
+
+export default async function ShipmentsPage() {
+  const shipments = await prisma.shipment.findMany({
+    include: { documents: true },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return (
+    <div>
+      <h1 className="mb-6 text-2xl font-semibold">Shipments</h1>
+
+      {shipments.length === 0 ? (
+        <p className="rounded-md border border-ink/10 bg-white p-6 text-ink/70">
+          No shipments yet. Seed the steel fixture with{" "}
+          <code className="rounded bg-ground px-1.5 py-0.5 text-sm">npm run db:seed</code>.
+        </p>
+      ) : (
+        <ul className="space-y-3">
+          {shipments.map((s) => (
+            <li key={s.id} className="rounded-md border border-ink/10 bg-white p-5">
+              <div className="flex items-baseline justify-between">
+                <span className="font-medium">{s.reference ?? "(no reference)"}</span>
+                <span className="text-sm text-ink/60">{s.lane}</span>
+              </div>
+              <div className="mt-1 text-sm text-ink/70">
+                {s.shipperName} → {s.consigneeName}
+              </div>
+              <div className="mt-2 text-sm text-ink/60">
+                {s.documents.length} document{s.documents.length === 1 ? "" : "s"}:{" "}
+                {s.documents.map((d) => d.type).join(", ")}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
