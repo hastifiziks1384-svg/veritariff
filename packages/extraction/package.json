@@ -9,6 +9,10 @@
     "typecheck": "node ../../node_modules/typescript/bin/tsc --noEmit"
   },
   "dependencies": {
-    "@veritariff/shared": "*"
+    "@anthropic-ai/sdk": "^0.60.0",
+    "@veritariff/db": "*",
+    "@veritariff/engine": "*",
+    "@veritariff/shared": "*",
+    "zod": "^3.25.0"
   }
 }

@@ -100,6 +100,8 @@ model Flag {
   shipment    Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
   field       String
   severity    String // info | warn | block
+  // Which engine raised the flag: extraction | mismatch | classification
+  source      String   @default("system")
   // JSON array of ConflictingValue — every value tied to its source document.
   conflictingValues String
   explanation       String
