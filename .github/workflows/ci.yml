@@ -18,7 +18,8 @@ jobs:
       - run: npm run db:generate
       - run: npm run check:boundary
       - run: npm run typecheck
-      - run: npm test
+      # Integration tests need the schema + fixture in place.
       - run: npm run db:push
       - run: npm run db:seed
+      - run: npm test
       - run: npm run build

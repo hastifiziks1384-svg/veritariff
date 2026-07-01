@@ -6,7 +6,7 @@ import type {
   ExtractionInput,
   ExtractionResult,
   ExtractionService,
-} from "./types.js";
+} from "./types";
 
 interface FixtureFieldEntry {
   value: string | null;

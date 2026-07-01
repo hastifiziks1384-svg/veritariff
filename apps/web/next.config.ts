@@ -6,7 +6,13 @@ import type { NextConfig } from "next";
 config({ path: path.resolve(process.cwd(), "../../.env") });
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@veritariff/db", "@veritariff/shared"],
+  transpilePackages: [
+    "@veritariff/db",
+    "@veritariff/shared",
+    "@veritariff/ingestion",
+    "@veritariff/extraction",
+    "@veritariff/engine",
+  ],
 };
 
 export default nextConfig;

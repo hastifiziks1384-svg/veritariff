@@ -5,6 +5,6 @@
  * data. No LLM calls, no network access. Enforced by
  * scripts/check-engine-boundary.mjs in CI.
  */
-export * from "./mismatch/index.js";
-export * from "./classification/index.js";
-export * from "./roo/index.js";
+export * from "./mismatch/index";
+export * from "./classification/index";
+export * from "./roo/index";

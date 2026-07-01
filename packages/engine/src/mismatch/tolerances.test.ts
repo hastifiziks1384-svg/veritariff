@@ -3,7 +3,7 @@ import {
   DEFAULT_TOLERANCES,
   FIELD_AUTHORITY_ORDER,
   ZERO_TOLERANCE_FIELDS,
-} from "./tolerances.js";
+} from "./tolerances";
 
 describe("tolerance model (§5.3)", () => {
   it("defaults weight/quantity tolerance to ±0.5%", () => {

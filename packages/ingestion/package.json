@@ -9,6 +9,11 @@
     "typecheck": "node ../../node_modules/typescript/bin/tsc --noEmit"
   },
   "dependencies": {
-    "@veritariff/shared": "*"
+    "@veritariff/db": "*",
+    "@veritariff/shared": "*",
+    "mailparser": "^3.7.0"
+  },
+  "devDependencies": {
+    "@types/mailparser": "^3.4.5"
   }
 }
