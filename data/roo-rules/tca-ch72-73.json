@@ -1,0 +1,58 @@
+{
+  "version": "tca-ch72-73-draft-2026-07-02",
+  "agreement": "TCA",
+  "instrument": "EU–UK Trade and Cooperation Agreement, Annex 3 (Product-specific rules of origin)",
+  "instrumentUrl": "https://www.gov.uk/government/publications/ukeu-and-eaec-trade-and-cooperation-agreement-ts-no82021",
+  "isIllustrative": true,
+  "note": "DRAFT transcription of the TCA product-specific rules for HS Chapters 72–73. Every entry is illustrative until the trade-law advisor validates the wording against the published Annex 3 text. Do not rely on these entries for a preference claim.",
+  "rules": [
+    {
+      "headings": "7201-7205",
+      "ruleText": "Production from materials of any heading, except that of the product (CTH).",
+      "ruleType": "CTH",
+      "article": "TCA Annex 3, rules for headings 72.01–72.05",
+      "draftNote": "Confirm exact Annex 3 wording for primary iron/steel forms."
+    },
+    {
+      "headings": "7206-7212",
+      "ruleText": "Production from materials of any heading, except that of the product (CTH); certain flat-rolled products require production from ingots, other primary forms or semi-finished materials of heading 72.06 or 72.07.",
+      "ruleType": "combination",
+      "article": "TCA Annex 3, rules for headings 72.06–72.12",
+      "draftNote": "Confirm the semi-finished-materials condition against Annex 3."
+    },
+    {
+      "headings": "7213-7216",
+      "ruleText": "Production from ingots or other primary forms or semi-finished materials of heading 72.06 or 72.07.",
+      "ruleType": "combination",
+      "article": "TCA Annex 3, rules for headings 72.13–72.16",
+      "draftNote": "Confirm exact Annex 3 wording for bars, rods, angles, shapes and sections."
+    },
+    {
+      "headings": "7217",
+      "ruleText": "Production from semi-finished materials of heading 72.07.",
+      "ruleType": "combination",
+      "article": "TCA Annex 3, rule for heading 72.17",
+      "draftNote": "Confirm exact Annex 3 wording for wire of iron or non-alloy steel."
+    },
+    {
+      "headings": "7301-7317",
+      "ruleText": "Production from materials of any heading, except that of the product (CTH).",
+      "ruleType": "CTH",
+      "article": "TCA Annex 3, rules for headings 73.01–73.17",
+      "draftNote": "Several tube/pipe headings carry specific exceptions — confirm per heading."
+    },
+    {
+      "headings": "7318",
+      "ruleText": "Production from materials of any heading, except that of the product (CTH).",
+      "ruleType": "CTH",
+      "article": "TCA Annex 3, rule for heading 73.18"
+    },
+    {
+      "headings": "7319-7326",
+      "ruleText": "Production from materials of any heading, except that of the product (CTH).",
+      "ruleType": "CTH",
+      "article": "TCA Annex 3, rules for headings 73.19–73.26",
+      "draftNote": "Confirm per-heading exceptions in Annex 3."
+    }
+  ]
+}

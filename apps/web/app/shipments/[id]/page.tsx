@@ -5,6 +5,7 @@ import { CANONICAL_FIELDS, type Citation, type ConflictingValue } from "@veritar
 import { ClassifyButton } from "./classify-button";
 import { ExtractButton } from "./extract-button";
 import { FlagCard, type FlagView } from "./flag-card";
+import { RooButton } from "./roo-button";
 
 export const dynamic = "force-dynamic";
 
@@ -48,10 +49,17 @@ export default async function ShipmentPage({
       documents: { orderBy: { uploadedAt: "asc" }, include: { extractedFields: true } },
       flags: { orderBy: { createdAt: "asc" } },
       classifications: { orderBy: { createdAt: "desc" }, take: 1 },
+      originRuleContexts: { orderBy: { createdAt: "desc" }, take: 1 },
       auditEvents: { orderBy: { at: "desc" } },
     },
   });
   if (!shipment) notFound();
+
+  const originRule = shipment.originRuleContexts[0] ?? null;
+  const nonOriginatingInputs = shipment.documents
+    .flatMap((d) => d.extractedFields)
+    .filter((f) => f.name === "non_originating_materials" && f.value)
+    .map((f) => f.value as string);
 
   const classification = shipment.classifications[0] ?? null;
   const reasoningChain = classification
@@ -123,6 +131,7 @@ export default async function ShipmentPage({
       <div className="mt-6 flex items-center gap-4">
         <ExtractButton shipmentId={shipment.id} />
         {hasExtraction && <ClassifyButton shipmentId={shipment.id} />}
+        {classification && <RooButton shipmentId={shipment.id} />}
         {!hasExtraction && (
           <span className="text-sm text-ink/60">
             No extracted record yet — run extraction to read the documents.
@@ -223,6 +232,64 @@ export default async function ShipmentPage({
               {classification.rulesDataVersion?.includes("draft") &&
                 " — curated ruleset pending trade-law advisor validation"}
             </p>
+          </div>
+        </>
+      )}
+
+      {originRule && (
+        <>
+          <h2 className="mt-8 mb-3 text-lg font-medium">Rule of origin ({originRule.agreement})</h2>
+          <div className="rounded-md border border-ink/10 bg-white p-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded bg-gold/10 px-2 py-0.5 text-xs font-medium text-gold">
+                {originRule.ruleType}
+              </span>
+              <span className="font-medium">
+                Heading {originRule.hsHeading.slice(0, 2)}.{originRule.hsHeading.slice(2)}
+              </span>
+              {originRule.isIllustrative && (
+                <span className="rounded bg-attention/10 px-2 py-0.5 text-xs font-medium text-attention">
+                  Illustrative — pending trade-law advisor validation
+                </span>
+              )}
+            </div>
+
+            <blockquote className="mt-3 border-l-2 border-gold/40 pl-3 text-sm italic text-ink/85">
+              “{originRule.ruleText}”
+            </blockquote>
+            <p className="mt-1 text-xs">
+              <a
+                href="https://www.gov.uk/government/publications/ukeu-and-eaec-trade-and-cooperation-agreement-ts-no82021"
+                target="_blank"
+                rel="noreferrer"
+                className="text-road hover:underline"
+              >
+                {originRule.citedArticle}
+              </a>
+            </p>
+
+            {originRule.plainEnglish && (
+              <p className="mt-3 text-sm text-ink/80">{originRule.plainEnglish}</p>
+            )}
+
+            {nonOriginatingInputs.length > 0 && (
+              <div className="mt-3 rounded-md bg-ground p-3 text-sm">
+                <p className="font-medium text-ink/80">
+                  Recorded non-originating inputs (from the supplier&rsquo;s declaration):
+                </p>
+                <ul className="mt-1 list-inside list-disc text-ink/70">
+                  {nonOriginatingInputs.map((v, i) => (
+                    <li key={i}>{v}</li>
+                  ))}
+                </ul>
+                <p className="mt-2 text-xs text-ink/55">
+                  Shown for context only. Whether the rule above is met is not assessed
+                  here — origin qualification is out of scope for this record.
+                </p>
+              </div>
+            )}
+
+            <p className="mt-3 text-xs text-ink/45">Rules data: {originRule.rulesDataVersion}</p>
           </div>
         </>
       )}
