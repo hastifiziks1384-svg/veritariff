@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
-import { z } from "zod";
+import { z } from "zod/v4";
 import { CANONICAL_FIELDS, DOCUMENT_TYPES } from "@veritariff/shared";
 import type {
   ExtractionInput,
@@ -92,7 +92,7 @@ export class AnthropicExtractionService implements ExtractionService {
       system: SYSTEM_PROMPT,
       messages: [{ role: "user", content }],
       output_config: {
-        format: zodOutputFormat(ExtractionOutputSchema, "document_extraction"),
+        format: zodOutputFormat(ExtractionOutputSchema),
       },
     });
 
