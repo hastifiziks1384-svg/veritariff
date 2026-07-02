@@ -132,6 +132,23 @@ export default async function ShipmentPage({
         <ExtractButton shipmentId={shipment.id} />
         {hasExtraction && <ClassifyButton shipmentId={shipment.id} />}
         {classification && <RooButton shipmentId={shipment.id} />}
+        {hasExtraction && (
+          <span className="ml-auto flex items-center gap-2 text-sm">
+            <span className="text-ink/50">Evidence bundle:</span>
+            <a
+              href={`/api/shipments/${shipment.id}/evidence?format=pdf`}
+              className="text-road hover:underline"
+            >
+              PDF
+            </a>
+            <a
+              href={`/api/shipments/${shipment.id}/evidence?format=json`}
+              className="text-road hover:underline"
+            >
+              JSON
+            </a>
+          </span>
+        )}
         {!hasExtraction && (
           <span className="text-sm text-ink/60">
             No extracted record yet — run extraction to read the documents.

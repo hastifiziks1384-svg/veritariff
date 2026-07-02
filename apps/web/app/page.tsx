@@ -5,7 +5,11 @@ export const dynamic = "force-dynamic";
 
 export default async function ShipmentsPage() {
   const shipments = await prisma.shipment.findMany({
-    include: { documents: true },
+    include: {
+      documents: true,
+      flags: { where: { resolution: "open" } },
+      classifications: { orderBy: { createdAt: "desc" }, take: 1 },
+    },
     orderBy: { createdAt: "desc" },
   });
 
@@ -34,9 +38,25 @@ export default async function ShipmentsPage() {
                 href={`/shipments/${s.id}`}
                 className="block rounded-md border border-ink/10 bg-white p-5 transition-colors hover:border-road/40"
               >
-                <div className="flex items-baseline justify-between">
+                <div className="flex items-baseline gap-3">
                   <span className="font-medium">{s.reference ?? "(no reference)"}</span>
-                  <span className="text-sm text-ink/60">{s.lane}</span>
+                  {s.flags.length > 0 && (
+                    <span className="rounded bg-attention/10 px-2 py-0.5 text-xs text-attention">
+                      {s.flags.length} open flag{s.flags.length === 1 ? "" : "s"}
+                    </span>
+                  )}
+                  {s.classifications[0] && (
+                    <span
+                      className={`rounded px-2 py-0.5 text-xs ${
+                        s.classifications[0].status === "verified"
+                          ? "bg-cleared/10 text-cleared"
+                          : "bg-road/10 text-road"
+                      }`}
+                    >
+                      HS {s.classifications[0].status.replaceAll("_", " ")}
+                    </span>
+                  )}
+                  <span className="ml-auto text-sm text-ink/60">{s.lane}</span>
                 </div>
                 {(s.shipperName || s.consigneeName) && (
                   <div className="mt-1 text-sm text-ink/70">

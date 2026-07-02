@@ -1,0 +1,16 @@
+{
+  "name": "@veritariff/export",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "node ../../node_modules/typescript/bin/tsc --noEmit"
+  },
+  "dependencies": {
+    "@veritariff/db": "*",
+    "@veritariff/shared": "*",
+    "pdf-lib": "^1.17.1"
+  }
+}
