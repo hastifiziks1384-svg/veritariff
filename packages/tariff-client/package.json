@@ -1,5 +1,5 @@
 {
-  "name": "@veritariff/extraction",
+  "name": "@veritariff/tariff-client",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -9,11 +9,6 @@
     "typecheck": "node ../../node_modules/typescript/bin/tsc --noEmit"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.109.1",
-    "@veritariff/db": "*",
-    "@veritariff/engine": "*",
-    "@veritariff/shared": "*",
-    "@veritariff/tariff-client": "*",
-    "zod": "^3.25.0"
+    "@veritariff/shared": "*"
   }
 }

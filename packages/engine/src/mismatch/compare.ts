@@ -61,8 +61,13 @@ const CROSS_CHECK_PAIRS: Partial<Record<CanonicalField, [string, string]>> = {
   quantity: ["commercial_invoice", "packing_list"],
 };
 
-/** Fields that are per-document by nature and never cross-compared. */
-const NOT_COMPARED: readonly string[] = ["composition", "non_originating_materials"];
+/** Fields that are per-document by nature and never cross-compared
+ * (wording naturally varies between documents). */
+const NOT_COMPARED: readonly string[] = [
+  "composition",
+  "non_originating_materials",
+  "product_description",
+];
 
 const DOC_LABELS: Record<string, string> = {
   commercial_invoice: "commercial invoice",

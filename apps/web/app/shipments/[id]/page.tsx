@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@veritariff/db";
-import { CANONICAL_FIELDS, type ConflictingValue } from "@veritariff/shared";
+import { CANONICAL_FIELDS, type Citation, type ConflictingValue } from "@veritariff/shared";
+import { ClassifyButton } from "./classify-button";
 import { ExtractButton } from "./extract-button";
 import { FlagCard, type FlagView } from "./flag-card";
 
@@ -21,6 +22,7 @@ const FIELD_LABELS: Record<string, string> = {
   reference: "Reference",
   shipper: "Shipper",
   consignee: "Consignee",
+  product_description: "Product description",
   invoice_value: "Value",
   currency: "Currency",
   quantity: "Quantity",
@@ -45,10 +47,20 @@ export default async function ShipmentPage({
     include: {
       documents: { orderBy: { uploadedAt: "asc" }, include: { extractedFields: true } },
       flags: { orderBy: { createdAt: "asc" } },
+      classifications: { orderBy: { createdAt: "desc" }, take: 1 },
       auditEvents: { orderBy: { at: "desc" } },
     },
   });
   if (!shipment) notFound();
+
+  const classification = shipment.classifications[0] ?? null;
+  const reasoningChain = classification
+    ? (JSON.parse(classification.reasoningChain) as {
+        kind: string;
+        text: string;
+        citation?: Citation;
+      }[])
+    : [];
 
   const hasExtraction = shipment.documents.some((d) => d.extractedFields.length > 0);
 
@@ -110,6 +122,7 @@ export default async function ShipmentPage({
 
       <div className="mt-6 flex items-center gap-4">
         <ExtractButton shipmentId={shipment.id} />
+        {hasExtraction && <ClassifyButton shipmentId={shipment.id} />}
         {!hasExtraction && (
           <span className="text-sm text-ink/60">
             No extracted record yet — run extraction to read the documents.
@@ -140,6 +153,77 @@ export default async function ShipmentPage({
               <FlagCard key={f.id} flag={toFlagView(f)} />
             ))}
           </ul>
+        </>
+      )}
+
+      {classification && (
+        <>
+          <h2 className="mt-8 mb-3 text-lg font-medium">Classification</h2>
+          <div className="rounded-md border border-ink/10 bg-white p-4">
+            <div className="flex items-center gap-3">
+              <span
+                className={`rounded px-2 py-0.5 text-xs font-medium ${
+                  classification.status === "verified"
+                    ? "bg-cleared/10 text-cleared"
+                    : classification.status === "suggested"
+                      ? "bg-road/10 text-road"
+                      : classification.status === "disagrees_with_declared"
+                        ? "bg-blocked/10 text-blocked"
+                        : "bg-attention/10 text-attention"
+                }`}
+              >
+                {classification.status.replaceAll("_", " ")}
+              </span>
+              {classification.hsCode && (
+                <span className="text-lg font-semibold">
+                  {classification.hsCode.slice(0, 4)}.{classification.hsCode.slice(4)}
+                </span>
+              )}
+              {classification.declaredHsCode && (
+                <span className="text-sm text-ink/60">
+                  declared: {classification.declaredHsCode}
+                </span>
+              )}
+              {classification.confidence > 0 && (
+                <span className="text-sm text-ink/50">
+                  confidence {Math.round(classification.confidence * 100)}%
+                </span>
+              )}
+            </div>
+
+            <ol className="mt-4 space-y-3 border-l-2 border-road/20 pl-4">
+              {reasoningChain.map((step, i) => (
+                <li key={i} className="text-sm">
+                  <p className="text-ink/90">{step.text}</p>
+                  {step.citation && (
+                    <p className="mt-1 text-xs text-ink/55">
+                      {step.citation.url ? (
+                        <a
+                          href={step.citation.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-road hover:underline"
+                        >
+                          {step.citation.reference}
+                        </a>
+                      ) : (
+                        <span className="text-gold">{step.citation.reference}</span>
+                      )}
+                      {step.citation.quote && (
+                        <span className="text-ink/50"> — “{step.citation.quote}”</span>
+                      )}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ol>
+
+            <p className="mt-4 text-xs text-ink/45">
+              Rules data: {classification.rulesDataVersion}
+              {classification.rulesDataVersion?.includes("draft") &&
+                " — curated ruleset pending trade-law advisor validation"}
+            </p>
+          </div>
         </>
       )}
 

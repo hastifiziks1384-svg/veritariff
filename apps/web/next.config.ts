@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
     "@veritariff/ingestion",
     "@veritariff/extraction",
     "@veritariff/engine",
+    "@veritariff/tariff-client",
   ],
 };
 

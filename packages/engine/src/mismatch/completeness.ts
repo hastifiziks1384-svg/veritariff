@@ -28,6 +28,7 @@ export const SHIPMENT_REQUIRED_FIELDS: readonly CanonicalField[] = [
   "reference",
   "shipper",
   "consignee",
+  "product_description",
   "invoice_value",
   "currency",
   "quantity",

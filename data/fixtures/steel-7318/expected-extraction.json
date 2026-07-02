@@ -8,6 +8,7 @@
         "reference": { "value": "MS-EXP-2026-0117", "confidence": 0.97, "status": "extracted" },
         "shipper": { "value": "Müller Stahl GmbH", "confidence": 0.96, "status": "extracted" },
         "consignee": { "value": "Sheffield Fastener Imports Ltd", "confidence": 0.96, "status": "extracted" },
+        "product_description": { "value": "Steel hex bolts M8 x 40 mm, zinc plated — threaded fasteners of iron or steel", "confidence": 0.95, "status": "extracted" },
         "invoice_value": { "value": "4850.00", "unit": "EUR", "confidence": 0.95, "status": "extracted" },
         "currency": { "value": "EUR", "confidence": 0.97, "status": "extracted" },
         "quantity": { "value": "4000", "unit": "pcs", "confidence": 0.95, "status": "extracted" },
@@ -24,6 +25,7 @@
         "reference": { "value": "MS-EXP-2026-0117", "confidence": 0.97, "status": "extracted" },
         "shipper": { "value": "Müller Stahl GmbH", "confidence": 0.95, "status": "extracted" },
         "consignee": { "value": "Sheffield Fastener Imports Ltd", "confidence": 0.95, "status": "extracted" },
+        "product_description": { "value": "Steel hex bolts M8 x 40 mm, zinc plated", "confidence": 0.94, "status": "extracted" },
         "quantity": { "value": "4000", "unit": "pcs", "confidence": 0.95, "status": "extracted" },
         "net_weight_kg": { "value": "88", "unit": "kg", "confidence": 0.94, "status": "extracted" },
         "gross_weight_kg": { "value": "95", "unit": "kg", "confidence": 0.94, "status": "extracted" },
@@ -40,6 +42,7 @@
         "reference": { "value": "MS-EXP-2026-0117", "confidence": 0.96, "status": "extracted" },
         "shipper": { "value": "Müller Stahl GmbH", "confidence": 0.95, "status": "extracted" },
         "consignee": { "value": "Sheffield Fastener Imports Ltd", "confidence": 0.95, "status": "extracted" },
+        "product_description": { "value": "Steel hex bolts, threaded fasteners of iron or steel", "confidence": 0.9, "status": "extracted" },
         "hs_code": { "value": "7318.15", "confidence": 0.94, "status": "extracted" },
         "non_originating_materials": {
           "value": "steel wire rod, HS heading 7213, origin CN (non-originating)",

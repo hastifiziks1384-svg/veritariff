@@ -13,6 +13,7 @@
     "@veritariff/db": "*",
     "@veritariff/ingestion": "*",
     "@veritariff/shared": "*",
+    "@veritariff/tariff-client": "*",
     "dotenv": "^16.4.5",
     "next": "^15.3.0",
     "react": "^19.1.0",

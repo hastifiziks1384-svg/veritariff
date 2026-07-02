@@ -37,6 +37,7 @@ Rules — these are absolute:
 - confidence is 0–1: how certain you are the transcribed value is what the document states. Use status "low_confidence" below 0.7.
 - Normalise units: weights in kg (unit "kg"), quantities with their stated unit (e.g. "pcs"). Keep monetary values as plain numbers in "value" with the currency code in "unit". Country fields use ISO 3166-1 alpha-2 codes when the country is unambiguous, otherwise transcribe the stated text.
 - "reference" is the shipment-level reference (export ref / shipment ref), not a document's own number.
+- "product_description" is the goods description exactly as the document states it (material, form, dimensions).
 - For mill certificates, also fill "composition" (chemical composition summary) and "melt_and_pour_country".
 - For supplier's declarations, fill "non_originating_materials" with what is declared non-originating (material, HS heading, origin).
 

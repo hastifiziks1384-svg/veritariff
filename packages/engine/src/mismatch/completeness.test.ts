@@ -19,6 +19,7 @@ const completeSet: FieldObservation[] = [
   obs({ name: "reference", value: "REF-1" }),
   obs({ name: "shipper", value: "A GmbH" }),
   obs({ name: "consignee", value: "B Ltd" }),
+  obs({ name: "product_description", value: "Steel hex bolts M8" }),
   obs({ name: "invoice_value", value: "1000" }),
   obs({ name: "currency", value: "EUR" }),
   obs({ name: "quantity", value: "100" }),

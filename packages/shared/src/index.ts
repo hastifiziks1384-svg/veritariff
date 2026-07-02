@@ -40,6 +40,7 @@ export const CANONICAL_FIELDS = [
   "reference",
   "shipper",
   "consignee",
+  "product_description",
   "invoice_value",
   "currency",
   "quantity",
