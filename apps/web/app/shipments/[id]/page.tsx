@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@veritariff/db";
-import { CANONICAL_FIELDS } from "@veritariff/shared";
+import { CANONICAL_FIELDS, type ConflictingValue } from "@veritariff/shared";
 import { ExtractButton } from "./extract-button";
+import { FlagCard, type FlagView } from "./flag-card";
 
 export const dynamic = "force-dynamic";
 
@@ -33,12 +34,6 @@ const FIELD_LABELS: Record<string, string> = {
   non_originating_materials: "Non-originating materials",
 };
 
-const SEVERITY_STYLES: Record<string, string> = {
-  info: "bg-road/10 text-road",
-  warn: "bg-attention/10 text-attention",
-  block: "bg-blocked/10 text-blocked",
-};
-
 export default async function ShipmentPage({
   params,
 }: {
@@ -56,7 +51,40 @@ export default async function ShipmentPage({
   if (!shipment) notFound();
 
   const hasExtraction = shipment.documents.some((d) => d.extractedFields.length > 0);
-  const openFlags = shipment.flags.filter((f) => f.resolution === "open");
+
+  const docTypeById = new Map(shipment.documents.map((d) => [d.id, d.type]));
+  const severityRank: Record<string, number> = { block: 0, warn: 1, info: 2 };
+  const toFlagView = (f: (typeof shipment.flags)[number]): FlagView => {
+    const conflicting = JSON.parse(f.conflictingValues) as ConflictingValue[];
+    return {
+      id: f.id,
+      field: f.field,
+      fieldLabel: FIELD_LABELS[f.field] ?? f.field,
+      severity: f.severity,
+      source: f.source,
+      explanation: f.explanation,
+      conflictingValues: conflicting
+        .filter((cv) => cv.value)
+        .map((cv) => ({
+          value: cv.value,
+          unit: cv.unit,
+          documentLabel:
+            TYPE_LABELS[cv.documentType ?? docTypeById.get(cv.sourceDocumentId) ?? ""] ??
+            "document",
+        })),
+      recommendedValue: f.recommendedValue,
+      recommendedValueUnit: f.recommendedValueUnit,
+      recommendationBasis: f.recommendationBasis,
+      recommendationStatus: f.recommendationStatus,
+      resolution: f.resolution,
+      resolvedBy: f.resolvedBy,
+      resolvedNote: f.resolvedNote,
+    };
+  };
+  const openFlags = shipment.flags
+    .filter((f) => f.resolution === "open")
+    .sort((a, b) => (severityRank[a.severity] ?? 3) - (severityRank[b.severity] ?? 3));
+  const closedFlags = shipment.flags.filter((f) => f.resolution !== "open");
 
   // Field × document matrix over canonical fields that appear at least once.
   const fieldRows = CANONICAL_FIELDS.filter((name) =>
@@ -96,20 +124,20 @@ export default async function ShipmentPage({
           </h2>
           <ul className="space-y-2">
             {openFlags.map((f) => (
-              <li key={f.id} className="rounded-md border border-ink/10 bg-white p-4">
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`rounded px-2 py-0.5 text-xs font-medium ${SEVERITY_STYLES[f.severity] ?? ""}`}
-                  >
-                    {f.severity}
-                  </span>
-                  <span className="font-medium">
-                    {FIELD_LABELS[f.field] ?? f.field}
-                  </span>
-                  <span className="text-xs text-ink/50">via {f.source}</span>
-                </div>
-                <p className="mt-2 text-sm text-ink/80">{f.explanation}</p>
-              </li>
+              <FlagCard key={f.id} flag={toFlagView(f)} />
+            ))}
+          </ul>
+        </>
+      )}
+
+      {closedFlags.length > 0 && (
+        <>
+          <h2 className="mt-8 mb-3 text-lg font-medium">
+            Reviewed flags <span className="text-ink/50">({closedFlags.length})</span>
+          </h2>
+          <ul className="space-y-2">
+            {closedFlags.map((f) => (
+              <FlagCard key={f.id} flag={toFlagView(f)} />
             ))}
           </ul>
         </>

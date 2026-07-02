@@ -1,7 +1,11 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import type { PrismaClient } from "@veritariff/db";
-import { evaluateCompleteness, type FieldObservation } from "@veritariff/engine";
+import {
+  compareShipmentFields,
+  evaluateCompleteness,
+  type FieldObservation,
+} from "@veritariff/engine";
 import type { DocumentType } from "@veritariff/shared";
 import type { ExtractionService } from "./types";
 
@@ -15,6 +19,7 @@ export interface ExtractionSummary {
   documentsProcessed: number;
   fieldsExtracted: number;
   flagsCreated: number;
+  mismatchFlags: number;
 }
 
 const MIME_BY_EXT: Record<string, string> = {
@@ -121,6 +126,8 @@ export async function runShipmentExtraction(
     },
   });
 
+  const mismatchFlags = await reconcileMismatchFlags(prisma, shipmentId, observations, shipment.documents.map((d) => d.type));
+
   await prisma.auditEvent.create({
     data: {
       shipmentId,
@@ -130,6 +137,7 @@ export async function runShipmentExtraction(
         documentsProcessed: shipment.documents.length,
         fieldsExtracted,
         flagsCreated: findings.length,
+        mismatchFlags,
         service: service.constructor.name,
       }),
     },
@@ -139,5 +147,59 @@ export async function runShipmentExtraction(
     documentsProcessed: shipment.documents.length,
     fieldsExtracted,
     flagsCreated: findings.length,
+    mismatchFlags,
   };
+}
+
+/**
+ * Runs the deterministic mismatch engine (§5.3) over the freshly extracted
+ * record and reconciles the results with existing mismatch flags:
+ * unchanged findings keep their flag (and any resolution history); stale
+ * open flags are removed; resolved/ignored/escalated flags are never
+ * deleted — they are part of the audit trail.
+ */
+async function reconcileMismatchFlags(
+  prisma: PrismaClient,
+  shipmentId: string,
+  observations: FieldObservation[],
+  documentTypes: string[],
+): Promise<number> {
+  const findings = compareShipmentFields(observations, documentTypes);
+  const existing = await prisma.flag.findMany({ where: { shipmentId, source: "mismatch" } });
+
+  const keyOf = (field: string, conflictingValues: string) => `${field}|${conflictingValues}`;
+  const existingByKey = new Map(existing.map((f) => [keyOf(f.field, f.conflictingValues), f]));
+  const seenKeys = new Set<string>();
+
+  for (const finding of findings) {
+    const conflictingValues = JSON.stringify(finding.conflictingValues);
+    const key = keyOf(finding.field, conflictingValues);
+    seenKeys.add(key);
+    if (existingByKey.has(key)) continue; // same finding, keep flag + its history
+
+    await prisma.flag.create({
+      data: {
+        shipmentId,
+        field: finding.field,
+        severity: finding.severity,
+        source: "mismatch",
+        conflictingValues,
+        explanation: finding.explanation,
+        recommendedValue: finding.recommendation?.value ?? null,
+        recommendedValueUnit: finding.recommendation?.unit ?? null,
+        recommendationBasis: finding.recommendation?.basis ?? null,
+        recommendationStatus: finding.recommendation ? "proposed" : "none",
+      },
+    });
+  }
+
+  // Remove open flags whose finding no longer exists (record changed).
+  for (const flag of existing) {
+    const key = keyOf(flag.field, flag.conflictingValues);
+    if (!seenKeys.has(key) && flag.resolution === "open") {
+      await prisma.flag.delete({ where: { id: flag.id } });
+    }
+  }
+
+  return findings.length;
 }
